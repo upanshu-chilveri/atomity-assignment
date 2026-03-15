@@ -5,20 +5,25 @@
    No hex values are hardcoded here.
 ───────────────────────────────────────────── */
 @import "tailwindcss";
-@import "./tokens.css";
+@import "./tokens.css"; /* Updated relative path since both are in src/styles/ */
 
 /* ── Page layout ───────────────────────────── */
 .app-wrapper {
-  @apply min-h-screen px-10 py-10;
+  @apply min-h-screen px-3 py-4 sm:px-6 sm:py-6 md:px-10 md:py-10 transition-colors duration-300;
   background-color: var(--color-bg);
   font-family: system-ui, sans-serif;
   color: var(--color-text);
 }
 
+.table-container {
+  @apply w-full overflow-x-auto overflow-y-hidden rounded-lg transition-shadow duration-300;
+  box-shadow: var(--shadow-sm);
+}
+
 /* ── Back button ───────────────────────────── */
 .back-btn {
-  @apply mt-6 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium
-         rounded-md border cursor-pointer transition-colors duration-150;
+  @apply mt-6 inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium
+         rounded-md border cursor-pointer transition-colors duration-200;
   border-color: var(--color-border-dark);
   background-color: var(--color-surface);
   color: var(--color-text-muted);
@@ -31,12 +36,12 @@
 
 /* ── Date dropdown ─────────────────────────── */
 .dropdown {
-  @apply relative inline-block mb-6;
+  @apply relative inline-block mb-4 sm:mb-6;
 }
 
 .dropdown-btn {
-  @apply inline-flex items-center gap-2 px-4 py-2 text-sm font-medium
-         rounded-md border cursor-pointer transition-colors duration-150;
+  @apply inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm font-medium
+         rounded-md border cursor-pointer transition-colors duration-200;
   background-color: var(--color-surface);
   border-color: var(--color-border-dark);
   color: var(--color-text);
@@ -48,14 +53,14 @@
 }
 
 .dropdown-menu {
-  @apply absolute left-0 z-20 mt-1 min-w-full rounded-md border overflow-hidden;
+  @apply absolute left-0 z-20 mt-1 min-w-full rounded-md border text-xs sm:text-sm overflow-hidden transition-colors duration-200;
   background-color: var(--color-surface);
   border-color: var(--color-border);
   box-shadow: var(--shadow-md);
 }
 
 .dropdown-item {
-  @apply px-4 py-2 text-sm cursor-pointer transition-colors duration-100;
+  @apply px-3 py-2 sm:px-4 sm:py-2 cursor-pointer transition-colors duration-150;
   color: var(--color-text);
 }
 .dropdown-item:hover {
@@ -65,35 +70,45 @@
 
 /* ── Cluster header ────────────────────────── */
 .cluster-header {
-  @apply flex items-center gap-4 mb-6;
+  @apply flex flex-wrap items-center gap-2 sm:gap-4 mb-4 sm:mb-6;
 }
 
 .cluster-pill {
-  @apply inline-flex items-center px-5 py-2 rounded-full text-sm font-bold tracking-wide;
+  @apply inline-flex items-center px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-colors duration-300;
   background-color: var(--color-primary);
-  color: var(--color-surface);
+  color: #ffffff;
+}
+
+/* Hardcode dark text on the strictly-green pill so it's readable in both modes */
+.dark .cluster-pill { 
+  color: #064e3b; /* Emerald 900 for dark-mode neon green contrast */
 }
 
 .cluster-selected {
-  @apply flex items-center gap-3;
+  @apply flex flex-wrap items-center gap-2 sm:gap-3;
 }
 
 .aggregate-box {
-  @apply flex flex-col px-4 py-2 rounded-md border text-xs;
+  @apply flex flex-col px-3 py-1.5 sm:px-4 sm:py-2 rounded-md border transition-colors duration-300;
   background-color: var(--color-surface);
   border-color: var(--color-border-dark);
   box-shadow: var(--shadow-xs);
   color: var(--color-text-muted);
+  font-size: 0.65rem; /* tiny base for mobile */
 }
+/* on sm upward, revert to basic text-xs */
+@media (min-width: 640px) {
+  .aggregate-box { font-size: 0.75rem; }
+}
+
 .aggregate-box strong {
-  @apply text-sm font-semibold mt-0.5;
+  @apply text-xs sm:text-sm font-semibold mt-0.5;
   color: var(--color-text);
 }
 
 /* ── Cluster table ─────────────────────────── */
 .cluster-table {
-  @apply w-full border-collapse rounded-lg overflow-hidden;
-  box-shadow: var(--shadow-sm);
+  @apply w-full border-collapse whitespace-nowrap;
 }
 
 .cluster-table thead {
@@ -102,23 +117,35 @@
 
 .cluster-table thead tr {
   background-color: var(--color-surface);
+  transition: background-color 0.3s;
 }
 
+/* Dense mobile headers, larger desktop headers */
 .cluster-table th {
-  @apply px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider;
+  @apply px-3 py-2 sm:px-5 sm:py-3 text-left text-[0.65rem] sm:text-xs font-semibold uppercase tracking-wider;
   color: var(--color-text-muted);
 }
 
 .cluster-table th:first-child {
-  /* name column header – blank */
-  @apply w-40;
+  @apply w-24 sm:w-40 sticky left-0 z-10;
+  background-color: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  box-shadow: 2px 0 5px -2px rgba(0,0,0,0.1); /* subtle shadow to separate from scrolled content */
 }
 
+/* Dense mobile cells, comfortable desktop cells */
 .cluster-table td {
-  @apply px-5 py-3 text-sm;
+  @apply px-3 py-2 sm:px-5 sm:py-3 text-xs sm:text-sm transition-colors duration-300;
   color: var(--color-text);
   border-bottom: 1px solid var(--color-border);
   background-color: var(--color-surface);
+}
+
+.cluster-table td:first-child {
+  @apply sticky left-0 z-10;
+  /* Relying on td's baseline background color, no need to redefine */
+  border-right: 1px solid var(--color-border);
+  box-shadow: 2px 0 5px -2px rgba(0,0,0,0.1);
 }
 
 .cluster-table tbody tr:last-child td {
@@ -127,7 +154,7 @@
 
 /* Clickable row hover */
 .clickable-row {
-  @apply cursor-pointer transition-colors duration-100;
+  @apply cursor-pointer;
 }
 .clickable-row:hover td {
   background-color: var(--color-row-hover);

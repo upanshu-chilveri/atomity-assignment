@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 type FilterOption = "Today" | "Last Week" | "Last 30 Days";
 
@@ -15,24 +16,48 @@ function DateFilter() {
 
   return (
     <div className="dropdown">
-      <button className="dropdown-btn" onClick={() => setOpen(!open)}>
+      <motion.button 
+        className="dropdown-btn" 
+        onClick={() => setOpen(!open)}
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
+      >
         {selected}
-        <span>{open ? "▲" : "▼"}</span>
-      </button>
+        <motion.span
+          animate={{ rotate: open ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
+        >
+          ▼
+        </motion.span>
+      </motion.button>
 
-      {open && (
-        <div className="dropdown-menu">
-          {options.map((option) => (
-            <div
-              key={option}
-              className="dropdown-item"
-              onClick={() => handleSelect(option)}
-            >
-              {option}
-            </div>
-          ))}
-        </div>
-      )}
+      <AnimatePresence>
+        {open && (
+          <motion.div 
+            className="dropdown-menu"
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            transition={{ 
+              type: "spring", 
+              stiffness: 300, 
+              damping: 24,
+              opacity: { duration: 0.15 }
+            }}
+            style={{ transformOrigin: "top left" }}
+          >
+            {options.map((option) => (
+              <div
+                key={option}
+                className="dropdown-item"
+                onClick={() => handleSelect(option)}
+              >
+                {option}
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import ClusterTable from "./components/ClusterTable";
 import DateFilter from "./components/DateDropdown";
 import ClusterHeader from "./components/ClusterHeader";
@@ -10,6 +11,7 @@ function App() {
   const [selectedNamespace, setSelectedNamespace] = useState<string | null>(
     null
   );
+  const [theme, setTheme] = useState<"light" | "dark">("light");
 
   let data: ClusterData[] = [];
 
@@ -37,23 +39,55 @@ function App() {
     }
   };
 
+  const toggleTheme = () => {
+    setTheme(prev => prev === "light" ? "dark" : "light");
+  };
+
   return (
-    <div className="app-wrapper">
-      <DateFilter />
+    <motion.div 
+      className={`app-wrapper ${theme === "dark" ? "dark" : ""}`}
+      initial={{ opacity: 0, y: 15 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+    >
+      <div className="flex flex-wrap items-center justify-between gap-4 w-full">
+        <DateFilter />
+        
+        <motion.button 
+          onClick={toggleTheme}
+          className="dropdown-btn mb-4 sm:mb-6"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.95 }}
+          style={{ width: "40px", height: "40px", padding: 0, display: "flex", justifyContent: "center", alignItems: "center" }}
+        >
+          {theme === "light" ? "🌙" : "☀️"}
+        </motion.button>
+      </div>
 
       <ClusterHeader
         selectedCluster={selectedCluster}
         selectedNamespace={selectedNamespace}
       />
 
-      <ClusterTable data={data} onSelectCluster={handleSelect} />
+      <div className="table-container">
+        <ClusterTable data={data} onSelectCluster={handleSelect} />
+      </div>
 
-      {(selectedCluster || selectedNamespace) && (
-        <button className="back-btn" onClick={goBack}>
-          ← Back
-        </button>
-      )}
-    </div>
+      <AnimatePresence>
+        {(selectedCluster || selectedNamespace) && (
+          <motion.button 
+            className="back-btn" 
+            onClick={goBack}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 15 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+          >
+            ← Back
+          </motion.button>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }
 

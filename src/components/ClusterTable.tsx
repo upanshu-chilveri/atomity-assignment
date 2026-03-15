@@ -1,3 +1,4 @@
+import { motion, AnimatePresence } from "framer-motion";
 import type { ClusterData } from "../types/clusterData";
 
 interface Props {
@@ -22,25 +23,31 @@ function ClusterTable({ data, onSelectCluster }: Props) {
       </thead>
 
       <tbody>
-        {data.map((row, index) => (
-          <tr
-            key={`${index}-${row.name}`}
-            onClick={() => onSelectCluster?.(row.name)}
-            className="clickable-row"
-          >
-            <td className="cluster-name">{row.name}</td>
+        <AnimatePresence mode="wait">
+          {data.map((row) => (
+            <motion.tr
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              key={row.name}
+              onClick={() => onSelectCluster?.(row.name)}
+              className="clickable-row"
+            >
+              <td className="cluster-name">{row.name}</td>
 
-            <td>${row.cpu}</td>
-            <td>${row.ram}</td>
-            <td>${row.storage}</td>
-            <td>${row.network}</td>
-            <td>${row.gpu}</td>
+              <td>${row.cpu}</td>
+              <td>${row.ram}</td>
+              <td>${row.storage}</td>
+              <td>${row.network}</td>
+              <td>${row.gpu}</td>
 
-            <td>{row.efficiency}%</td>
+              <td>{row.efficiency}%</td>
 
-            <td className="total">${row.total}</td>
-          </tr>
-        ))}
+              <td className="total">${row.total}</td>
+            </motion.tr>
+          ))}
+        </AnimatePresence>
       </tbody>
     </table>
   );
