@@ -52,6 +52,10 @@
   color: var(--color-primary-dark);
 }
 
+.theme-icon {
+  @apply w-[80%] h-[80%] object-contain;
+}
+
 .dropdown-menu {
   @apply absolute left-0 z-20 mt-1 min-w-full rounded-md border text-xs sm:text-sm overflow-hidden transition-colors duration-200;
   background-color: var(--color-surface);

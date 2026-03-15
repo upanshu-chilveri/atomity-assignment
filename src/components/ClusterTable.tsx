@@ -1,9 +1,11 @@
 import { motion, AnimatePresence } from "framer-motion";
-import type { ClusterData } from "../types/clusterData";
+import type { Cluster, Namespace, Pod } from "../types/clusterData";
+
+type TableDataRow = Cluster | Namespace | Pod;
 
 interface Props {
-  data: ClusterData[];
-  onSelectCluster?: (cluster: string) => void;
+  data: TableDataRow[];
+  onSelectCluster?: (id: string) => void;
 }
 
 function ClusterTable({ data, onSelectCluster }: Props) {
@@ -30,8 +32,8 @@ function ClusterTable({ data, onSelectCluster }: Props) {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
-              key={row.name}
-              onClick={() => onSelectCluster?.(row.name)}
+              key={row.id}
+              onClick={() => onSelectCluster?.(row.id)}
               className="clickable-row"
             >
               <td className="cluster-name">{row.name}</td>

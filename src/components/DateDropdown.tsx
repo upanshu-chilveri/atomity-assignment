@@ -1,16 +1,19 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import type { TimeRange } from "../types/clusterData";
 
-type FilterOption = "Today" | "Last Week" | "Last 30 Days";
+interface DateFilterProps {
+  selectedRange: TimeRange;
+  onRangeChange: (range: TimeRange) => void;
+}
 
-function DateFilter() {
-  const [selected, setSelected] = useState<FilterOption>("Last 30 Days");
+function DateFilter({ selectedRange, onRangeChange }: DateFilterProps) {
   const [open, setOpen] = useState(false);
 
-  const options: FilterOption[] = ["Today", "Last Week", "Last 30 Days"];
+  const options: TimeRange[] = ["Today", "Last Week", "Last 30 Days"];
 
-  const handleSelect = (option: FilterOption) => {
-    setSelected(option);
+  const handleSelect = (option: TimeRange) => {
+    onRangeChange(option);
     setOpen(false);
   };
 
@@ -22,7 +25,7 @@ function DateFilter() {
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
       >
-        {selected}
+        {selectedRange}
         <motion.span
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.2 }}
