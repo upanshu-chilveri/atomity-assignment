@@ -1,73 +1,105 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import type { Variants } from "framer-motion";
 
 interface Props {
   selectedCluster: string | null;
   selectedNamespace: string | null;
 }
 
-export default function ClusterHeader({
+const segmentVariants: Variants = {
+  hidden: { opacity: 0, y: 15, scale: 0.95 },
+  visible: { 
+    opacity: 1, 
+    y: 0, 
+    scale: 1,
+    transition: { type: "spring", stiffness: 350, damping: 25 }
+  },
+  exit: { 
+    opacity: 0, 
+    scale: 0.9,
+    transition: { duration: 0.2 }
+  }
+};
+
+function ClusterHeader({
   selectedCluster,
   selectedNamespace,
 }: Props) {
   return (
-    <div className="cluster-header">
-      {!selectedCluster && (
+    <div className="cluster-header flex items-center min-h-[48px]">
+      <AnimatePresence mode="popLayout">
+        {/* Cluster Level */}
         <motion.div
-          layoutId="header-pill"
+          key="cluster-segment"
+          layout
+          variants={segmentVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
           className="cluster-pill"
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.3 }}
         >
-          Cluster
+          {selectedCluster || "Clusters"}
         </motion.div>
-      )}
 
-      {selectedCluster && !selectedNamespace && (
-        <motion.div
-          className="cluster-selected"
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <motion.div layoutId="header-pill" className="cluster-pill">
-            {selectedCluster} - Namespace
-          </motion.div>
-
+        {/* Namespace Level */}
+        {selectedCluster && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="aggregate-box"
+            key="namespace-segment"
+            layout
+            variants={segmentVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="flex items-center gap-2"
           >
-            <span>Aggregated by:</span>
-            <strong>Namespace</strong>
+            <span className="text-gray-400 font-bold mx-1">/</span>
+            <div className="cluster-pill">
+              {selectedNamespace || "Namespaces"}
+            </div>
           </motion.div>
-        </motion.div>
-      )}
+        )}
 
-      {selectedCluster && selectedNamespace && (
-        <motion.div
-          className="cluster-selected"
-          initial={{ opacity: 0, x: -10 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <motion.div layoutId="header-pill" className="cluster-pill">
-            {selectedCluster} - {selectedNamespace} - Pod
-          </motion.div>
-
+        {/* Pod Level */}
+        {selectedNamespace && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="aggregate-box"
+            key="pod-segment"
+            layout
+            variants={segmentVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="flex items-center gap-2"
           >
-            <span>Aggregated by:</span>
-            <strong>Pod</strong>
+            <span className="text-gray-400 font-bold mx-1">/</span>
+            <div className="cluster-pill">
+              Pods
+            </div>
           </motion.div>
+        )}
+
+        {/* Aggregate Box */}
+        <motion.div
+          key="aggregate-segment"
+          layout
+          variants={segmentVariants}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          className="aggregate-box ml-auto"
+        >
+          <span>Aggregated by:</span>
+          <motion.strong
+            key={selectedNamespace ? "Pod" : selectedCluster ? "Namespace" : "Cluster"}
+            initial={{ opacity: 0, y: -5 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            {selectedNamespace ? "Pod" : selectedCluster ? "Namespace" : "Cluster"}
+          </motion.strong>
         </motion.div>
-      )}
+      </AnimatePresence>
     </div>
   );
 }
+
+export default ClusterHeader;

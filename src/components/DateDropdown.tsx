@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { TimeRange } from "../types/clusterData";
+import { TIME_RANGES } from "../types/clusterData";
 
 interface DateFilterProps {
   selectedRange: TimeRange;
@@ -10,7 +11,7 @@ interface DateFilterProps {
 function DateFilter({ selectedRange, onRangeChange }: DateFilterProps) {
   const [open, setOpen] = useState(false);
 
-  const options: TimeRange[] = ["Today", "Last Week", "Last 30 Days"];
+  const options = TIME_RANGES;
 
   const handleSelect = (option: TimeRange) => {
     onRangeChange(option);
@@ -19,8 +20,8 @@ function DateFilter({ selectedRange, onRangeChange }: DateFilterProps) {
 
   return (
     <div className="dropdown">
-      <motion.button 
-        className="dropdown-btn" 
+      <motion.button
+        className="dropdown-btn"
         onClick={() => setOpen(!open)}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
@@ -36,14 +37,14 @@ function DateFilter({ selectedRange, onRangeChange }: DateFilterProps) {
 
       <AnimatePresence>
         {open && (
-          <motion.div 
+          <motion.div
             className="dropdown-menu"
             initial={{ opacity: 0, y: -10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
-            transition={{ 
-              type: "spring", 
-              stiffness: 300, 
+            transition={{
+              type: "spring",
+              stiffness: 300,
               damping: 24,
               opacity: { duration: 0.15 }
             }}

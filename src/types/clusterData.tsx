@@ -40,4 +40,5 @@ export interface HierarchicalData {
   clusters: Cluster[];
 }
 
-export type TimeRange = "Today" | "Last Week" | "Last 30 Days";
+export const TIME_RANGES = ["Today", "Last Week", "Last 30 Days"] as const;
+export type TimeRange = typeof TIME_RANGES[number];
