@@ -1,73 +1,64 @@
-# React + TypeScript + Vite
+# Atomity Frontend Assignment
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This repository contains my implementation for the Atomity frontend engineering assignment. The goal of this project was to build a responsive and interactive interface while demonstrating thoughtful architecture, animation design, data management, and maintainable styling.
 
-Currently, two official plugins are available:
+### Deployment Link: https://atomity-assignment-od7bzx2tn-upanshu-chilveris-projects.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Feature Chosen
 
-## React Compiler
+The implemented feature focuses on building a hierarchical cloud resource visualization where users can drill down through:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Cluster → Namespace → Pods
 
-## Expanding the ESLint configuration
+This structure mirrors real-world Kubernetes infrastructure where resources are organized in nested layers. I chose this feature because it demonstrates:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Handling nested datasets
+- Implementing interactive drill-down tables
+- Managing UI state across multiple hierarchy levels
+- Maintaining performance while rendering dynamic data
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Since Atomity builds tools for analyzing and optimizing cloud workloads, visualizing infrastructure hierarchies felt aligned with the platform’s real-world use cases.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Approach to Animation
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Animations were implemented to make transitions between hierarchy levels intuitive and visually smooth.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The animation strategy focused on:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Subtle transitions instead of heavy motion**
+- Maintaining **perceived performance**
+- Ensuring animations do not block data rendering
+- Using recharts insteda of charts.js to render SVG directly
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+Animations were intentionally lightweight to avoid degrading performance in large datasets.
+
+## Libraries Used
+
+### React
+
+### TypeScript
+
+### Tailwind CSS
+
+### Framer Motion
+
+### React-Query
+
+###  Recharts
+
+## What I Would Improve With More Time
+
+If more time were available, I would expand the project in several areas.
+
+### 1. Advanced Filtering
+Add filtering by resource usage, namespace, or cluster metadata.
+
+### 2. Loading States and Skeletons
+Improve user feedback while asynchronous data loads.
+
+### 3. Real Backend Integration
+Replace mock datasets with live APIs connected to cloud usage analytics.
+
+### 4. More fluid Animations of Chart elements 
+The chart elements animations can be tweaked and improved to look more cohesive with the webiste, making it more pleasing on the eye.
+
