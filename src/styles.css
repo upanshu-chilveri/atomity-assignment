@@ -1,0 +1,146 @@
+/* ─────────────────────────────────────────────
+   styles.css — Central component styles
+   All classes defined here using @apply.
+   Colors always reference tokens from tokens.css.
+   No hex values are hardcoded here.
+───────────────────────────────────────────── */
+@import "tailwindcss";
+@import "./tokens.css";
+
+/* ── Page layout ───────────────────────────── */
+.app-wrapper {
+  @apply min-h-screen px-10 py-10;
+  background-color: var(--color-bg);
+  font-family: system-ui, sans-serif;
+  color: var(--color-text);
+}
+
+/* ── Back button ───────────────────────────── */
+.back-btn {
+  @apply mt-6 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium
+         rounded-md border cursor-pointer transition-colors duration-150;
+  border-color: var(--color-border-dark);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+}
+.back-btn:hover {
+  background-color: var(--color-row-hover);
+  color: var(--color-primary-dark);
+  border-color: var(--color-primary);
+}
+
+/* ── Date dropdown ─────────────────────────── */
+.dropdown {
+  @apply relative inline-block mb-6;
+}
+
+.dropdown-btn {
+  @apply inline-flex items-center gap-2 px-4 py-2 text-sm font-medium
+         rounded-md border cursor-pointer transition-colors duration-150;
+  background-color: var(--color-surface);
+  border-color: var(--color-border-dark);
+  color: var(--color-text);
+  box-shadow: var(--shadow-xs);
+}
+.dropdown-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary-dark);
+}
+
+.dropdown-menu {
+  @apply absolute left-0 z-20 mt-1 min-w-full rounded-md border overflow-hidden;
+  background-color: var(--color-surface);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-md);
+}
+
+.dropdown-item {
+  @apply px-4 py-2 text-sm cursor-pointer transition-colors duration-100;
+  color: var(--color-text);
+}
+.dropdown-item:hover {
+  background-color: var(--color-row-hover);
+  color: var(--color-primary-dark);
+}
+
+/* ── Cluster header ────────────────────────── */
+.cluster-header {
+  @apply flex items-center gap-4 mb-6;
+}
+
+.cluster-pill {
+  @apply inline-flex items-center px-5 py-2 rounded-full text-sm font-bold tracking-wide;
+  background-color: var(--color-primary);
+  color: var(--color-surface);
+}
+
+.cluster-selected {
+  @apply flex items-center gap-3;
+}
+
+.aggregate-box {
+  @apply flex flex-col px-4 py-2 rounded-md border text-xs;
+  background-color: var(--color-surface);
+  border-color: var(--color-border-dark);
+  box-shadow: var(--shadow-xs);
+  color: var(--color-text-muted);
+}
+.aggregate-box strong {
+  @apply text-sm font-semibold mt-0.5;
+  color: var(--color-text);
+}
+
+/* ── Cluster table ─────────────────────────── */
+.cluster-table {
+  @apply w-full border-collapse rounded-lg overflow-hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.cluster-table thead {
+  border-bottom: 2px solid var(--color-border);
+}
+
+.cluster-table thead tr {
+  background-color: var(--color-surface);
+}
+
+.cluster-table th {
+  @apply px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider;
+  color: var(--color-text-muted);
+}
+
+.cluster-table th:first-child {
+  /* name column header – blank */
+  @apply w-40;
+}
+
+.cluster-table td {
+  @apply px-5 py-3 text-sm;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+}
+
+.cluster-table tbody tr:last-child td {
+  @apply border-b-0;
+}
+
+/* Clickable row hover */
+.clickable-row {
+  @apply cursor-pointer transition-colors duration-100;
+}
+.clickable-row:hover td {
+  background-color: var(--color-row-hover);
+}
+
+/* Name cell */
+.cluster-name {
+  @apply font-semibold;
+  color: var(--color-text);
+}
+
+/* Total cell */
+.total {
+  @apply font-bold;
+  color: var(--color-primary-dark);
+}
