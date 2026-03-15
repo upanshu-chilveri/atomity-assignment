@@ -1,8 +1,3 @@
-/* ─────────────────────────────────────────────
-   Design Tokens
-   Single source of truth for all colors,
-   spacing, radii, and shadows.
-───────────────────────────────────────────── */
 :root {
   /* Brand */
   --color-primary:      #22c55e;   /* green-500 */
@@ -45,31 +40,25 @@
   --space-10: 2.5rem;
 }
 
-/* ─────────────────────────────────────────────
-   Dark Mode Overrides
-───────────────────────────────────────────── */
+/* Dark mode colours */
+
 .dark {
-  /* Brand adjustments for dark mode readability */
   --color-primary:      #4ade80;   /* green-400 */
   --color-primary-dark: #22c55e;   /* green-500 */
   --color-primary-bg:   #064e3b;   /* emerald-900 */
   --color-primary-text: #a7f3d0;   /* emerald-200 */
 
-  /* Surface & background */
   --color-bg:           #111827;   /* gray-900 */
   --color-surface:      #1f2937;   /* gray-800 */
   --color-border:       #374151;   /* gray-700 */
   --color-border-dark:  #4b5563;   /* gray-600 */
 
-  /* Typography */
   --color-text:         #f9fafb;   /* gray-50 */
   --color-text-muted:   #9ca3af;   /* gray-400 */
   --color-text-light:   #6b7280;   /* gray-500 */
 
-  /* Accent / state */
   --color-row-hover:    #374151;   /* gray-700 (subtle contrast against surface) */
 
-  /* Shadows (darker for dark backdrops) */
   --shadow-xs: 0 1px 2px rgb(0 0 0 / 0.3);
   --shadow-sm: 0 1px 4px rgb(0 0 0 / 0.4);
   --shadow-md: 0 4px 12px rgb(0 0 0 / 0.5);

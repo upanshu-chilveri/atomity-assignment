@@ -18,22 +18,20 @@ interface Album {
   title: string;
 }
 
-// ─────────────────────────────────────────────
-// Pricing Constants (Hourly base rate)
-// ─────────────────────────────────────────────
+//hardcoded pricing, no pricing available by public api
 const COST_CPU = 0.02;
 const COST_RAM = 0.01;
 const COST_STORAGE = 0.005;
 const COST_NETWORK = 0.003;
 const COST_GPU = 0.05;
 
-/** Deterministic pseudo-random number generator based on ID */
+// Deterministic pseudo-random number generator based on ID
 function seededRandom(seed: number) {
   const x = Math.sin(seed++) * 10000;
   return x - Math.floor(x);
 }
 
-/** Generate realistic mock resources bounds and compute exact hourly cost */
+// Generate realistic mock resources bounds and compute exact hourly cost 
 function generatePodResources(podId: number): Omit<Pod, "id" | "name"> {
   // Generate random units
   const cpuUnits = Math.floor(seededRandom(podId) * 31) + 1; // 1-32 cores
@@ -57,8 +55,6 @@ function generatePodResources(podId: number): Omit<Pod, "id" | "name"> {
 }
 
 /**
- * Fetch simulated hierarchical cloud infrastructure dataset
- * 
  * Maps flat REST JSONPlaceholder entities:
  * Users -> Clusters
  * Posts -> Namespaces

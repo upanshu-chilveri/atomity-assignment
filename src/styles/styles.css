@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "./tokens.css"; 
 
+html, body {
+  @apply overflow-x-hidden transition-colors duration-300 ease-in-out;
+  background-color: var(--color-bg);
+}
+
 /* ── Page layout ───────────────────────────── */
 .app-wrapper {
   @apply min-h-screen px-3 py-4 sm:px-6 sm:py-6 md:px-10 md:py-10 transition-colors duration-300 ease-in-out;
@@ -12,6 +17,26 @@
 .table-container {
   @apply w-full overflow-x-auto overflow-y-hidden rounded-lg transition-shadow duration-300;
   box-shadow: var(--shadow-sm);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-dark) transparent;
+}
+
+.table-container::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.table-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background-color: var(--color-border-dark);
+  border-radius: 20px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-text-light);
 }
 
 /* ── Back button ───────────────────────────── */
@@ -87,7 +112,7 @@
 }
 
 .aggregate-box {
-  @apply flex flex-row items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-md border transition-all duration-300 ease-in-out;
+  @apply flex flex-row items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-md border transition-colors duration-300 ease-in-out;
   background-color: var(--color-surface);
   border-color: var(--color-border);
   box-shadow: var(--shadow-xs);

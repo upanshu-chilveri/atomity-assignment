@@ -8,14 +8,14 @@ interface Props {
 
 const segmentVariants: Variants = {
   hidden: { opacity: 0, y: 15, scale: 0.95 },
-  visible: { 
-    opacity: 1, 
-    y: 0, 
+  visible: {
+    opacity: 1,
+    y: 0,
     scale: 1,
     transition: { type: "spring", stiffness: 350, damping: 25 }
   },
-  exit: { 
-    opacity: 0, 
+  exit: {
+    opacity: 0,
     scale: 0.9,
     transition: { duration: 0.2 }
   }
@@ -26,9 +26,8 @@ function ClusterHeader({
   selectedNamespace,
 }: Props) {
   return (
-    <div className="cluster-header flex items-center min-h-[48px]">
+    <header className="cluster-header flex items-center min-h-[48px]">
       <AnimatePresence mode="popLayout">
-        {/* Cluster Level */}
         <motion.div
           key="cluster-segment"
           layout
@@ -41,7 +40,6 @@ function ClusterHeader({
           {selectedCluster || "Clusters"}
         </motion.div>
 
-        {/* Namespace Level */}
         {selectedCluster && (
           <motion.div
             key="namespace-segment"
@@ -59,7 +57,6 @@ function ClusterHeader({
           </motion.div>
         )}
 
-        {/* Pod Level */}
         {selectedNamespace && (
           <motion.div
             key="pod-segment"
@@ -77,7 +74,6 @@ function ClusterHeader({
           </motion.div>
         )}
 
-        {/* Aggregate Box */}
         <motion.div
           key="aggregate-segment"
           layout
@@ -92,13 +88,12 @@ function ClusterHeader({
             key={selectedNamespace ? "Pod" : selectedCluster ? "Namespace" : "Cluster"}
             initial={{ opacity: 0, y: -5 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 }}
           >
             {selectedNamespace ? "Pod" : selectedCluster ? "Namespace" : "Cluster"}
           </motion.strong>
         </motion.div>
       </AnimatePresence>
-    </div>
+    </header>
   );
 }
 

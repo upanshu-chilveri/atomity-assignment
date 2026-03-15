@@ -1,10 +1,14 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { motion, AnimatePresence } from "framer-motion";
+
 import ClusterTable from "./components/ClusterTable";
 import DateFilter from "./components/DateDropdown";
 import ClusterHeader from "./components/ClusterHeader";
+
 import { fetchInfrastructureData } from "./services/api";
-import type { Cluster, TimeRange } from "./types/clusterData";
+
+import type { TimeRange } from "./types/clusterData";
 import "./styles/styles.css";
 
 import darkmode from "./assets/darkmode.png";
@@ -12,31 +16,17 @@ import lightmode from "./assets/lightmode.png";
 
 
 function App() {
-  const [clusters, setClusters] = useState<Cluster[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
   const [selectedClusterId, setSelectedClusterId] = useState<string | null>(null);
   const [selectedNamespaceId, setSelectedNamespaceId] = useState<string | null>(null);
   const [timeRange, setTimeRange] = useState<TimeRange>("Last 30 Days");
   const [theme, setTheme] = useState<"light" | "dark">("light");
 
-  // Fetch API Data on Mount
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const data = await fetchInfrastructureData();
-        setClusters(data);
-        setIsLoading(false);
-      } catch (err) {
-        setError("Failed to fetch infrastructure data. Please try again.");
-        setIsLoading(false);
-      }
-    }
-    loadData();
-  }, []);
+  // Fetch API Data using React Query
+  const { data: clusters = [], isLoading, error } = useQuery({
+    queryKey: ['infrastructureData'],
+    queryFn: fetchInfrastructureData,
+  });
 
-  // Compute Multiplier based on TimeRange
   const costMultiplier = useMemo(() => {
     switch (timeRange) {
       case "Today": return 24; // 1 day
@@ -46,7 +36,6 @@ function App() {
     }
   }, [timeRange]);
 
-  // Derive Table Data from Hierarchy
   const tableData = useMemo(() => {
     let rows: any[] = [];
 
@@ -80,10 +69,8 @@ function App() {
 
   // Handle Drilldown
   const handleSelect = (id: string) => {
-    // Determine level by prefix
     if (id.startsWith("cluster-")) setSelectedClusterId(id);
     else if (id.startsWith("ns-")) setSelectedNamespaceId(id);
-    // Pods do not drill down further
   };
 
   const goBack = () => {
@@ -91,12 +78,13 @@ function App() {
     else if (selectedClusterId) setSelectedClusterId(null);
   };
 
+
   const toggleTheme = () => {
     setTheme(prev => prev === "light" ? "dark" : "light");
   };
 
   if (error) {
-    return <div className="p-10 text-red-500 font-bold">{error}</div>;
+    return <div className="p-10 text-red-500 font-bold">Failed to fetch infrastructure data. Please try again.</div>;
   }
 
   return (
