@@ -10,7 +10,10 @@ interface Props {
 
 function ClusterTable({ data, onSelectCluster }: Props) {
   return (
-    <table className="cluster-table">
+    <table
+      className="cluster-table"
+      aria-label="Infrastructure cost data"
+    >
       <thead>
         <tr>
           <th></th>
@@ -25,7 +28,7 @@ function ClusterTable({ data, onSelectCluster }: Props) {
       </thead>
 
       <tbody>
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           {data.map((row) => (
             <motion.tr
               initial={{ opacity: 0 }}
@@ -34,6 +37,15 @@ function ClusterTable({ data, onSelectCluster }: Props) {
               transition={{ duration: 0.2, ease: "easeInOut" }}
               key={row.id}
               onClick={() => onSelectCluster?.(row.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onSelectCluster?.(row.id);
+                }
+              }}
+              tabIndex={0}
+              role="button"
+              aria-label={`View details for ${row.name}, total cost $${row.total}`}
               className="clickable-row"
             >
               <td className="cluster-name">{row.name}</td>

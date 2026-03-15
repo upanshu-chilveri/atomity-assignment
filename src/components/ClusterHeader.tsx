@@ -26,73 +26,80 @@ function ClusterHeader({
   selectedNamespace,
 }: Props) {
   return (
-    <header className="cluster-header flex items-center min-h-[48px]">
-      <AnimatePresence mode="popLayout">
-        <motion.div
-          key="cluster-segment"
-          layout
-          variants={segmentVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          className="cluster-pill"
-        >
-          {selectedCluster || "Clusters"}
-        </motion.div>
-
-        {selectedCluster && (
+    <header
+      className="cluster-header flex flex-wrap items-center gap-y-2 min-h-[48px]"
+      aria-label="Navigation breadcrumb"
+    >
+      <div className="flex items-center flex-wrap gap-y-2">
+        <AnimatePresence mode="popLayout">
           <motion.div
-            key="namespace-segment"
+            key="cluster-segment"
             layout
             variants={segmentVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="flex items-center gap-2"
+            className="cluster-pill"
           >
-            <span className="text-gray-400 font-bold mx-1">/</span>
-            <div className="cluster-pill">
-              {selectedNamespace || "Namespaces"}
-            </div>
+            {selectedCluster || "Clusters"}
           </motion.div>
-        )}
 
-        {selectedNamespace && (
-          <motion.div
-            key="pod-segment"
-            layout
-            variants={segmentVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            className="flex items-center gap-2"
-          >
-            <span className="text-gray-400 font-bold mx-1">/</span>
-            <div className="cluster-pill">
-              Pods
-            </div>
-          </motion.div>
-        )}
+          {selectedCluster && (
+            <motion.div
+              key="namespace-segment"
+              layout
+              variants={segmentVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="flex items-center gap-2"
+            >
+              <span className="text-gray-400 font-bold mx-1" aria-hidden>/ </span>
+              <div className="cluster-pill">
+                {selectedNamespace || "Namespaces"}
+              </div>
+            </motion.div>
+          )}
 
-        <motion.div
-          key="aggregate-segment"
-          layout
-          variants={segmentVariants}
-          initial="hidden"
-          animate="visible"
-          exit="exit"
-          className="aggregate-box ml-auto"
+          {selectedNamespace && (
+            <motion.div
+              key="pod-segment"
+              layout
+              variants={segmentVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              className="flex items-center gap-2"
+            >
+              <span className="text-gray-400 font-bold mx-1" aria-hidden>/ </span>
+              <div className="cluster-pill">
+                Pods
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      <motion.div
+        key="aggregate-segment"
+        layout
+        variants={segmentVariants}
+        initial="hidden"
+        animate="visible"
+        className="aggregate-box ml-auto"
+        aria-live="polite"
+        aria-label={`Aggregated by ${selectedNamespace ? 'Pod' : selectedCluster ? 'Namespace' : 'Cluster'
+          }`}
+      >
+        <span>Aggregated by:</span>
+        <motion.strong
+          key={selectedNamespace ? "Pod" : selectedCluster ? "Namespace" : "Cluster"}
+          initial={{ opacity: 0, y: -5 }}
+          animate={{ opacity: 1, y: 0 }}
         >
-          <span>Aggregated by:</span>
-          <motion.strong
-            key={selectedNamespace ? "Pod" : selectedCluster ? "Namespace" : "Cluster"}
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            {selectedNamespace ? "Pod" : selectedCluster ? "Namespace" : "Cluster"}
-          </motion.strong>
-        </motion.div>
-      </AnimatePresence>
+          {selectedNamespace ? "Pod" : selectedCluster ? "Namespace" : "Cluster"}
+        </motion.strong>
+      </motion.div>
     </header>
   );
 }

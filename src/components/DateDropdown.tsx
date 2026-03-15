@@ -19,12 +19,14 @@ function DateFilter({ selectedRange, onRangeChange }: DateFilterProps) {
   };
 
   return (
-    <div className="dropdown">
+    <div className="dropdown" role="combobox" aria-expanded={open} aria-haspopup="listbox">
       <motion.button
         className="dropdown-btn"
         onClick={() => setOpen(!open)}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
+        aria-label={`Time range: ${selectedRange}. Click to change`}
+        aria-expanded={open}
       >
         {selectedRange}
         <motion.span
@@ -39,6 +41,8 @@ function DateFilter({ selectedRange, onRangeChange }: DateFilterProps) {
         {open && (
           <motion.div
             className="dropdown-menu"
+            role="listbox"
+            aria-label="Time range options"
             initial={{ opacity: 0, y: -10, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.95 }}
@@ -53,8 +57,12 @@ function DateFilter({ selectedRange, onRangeChange }: DateFilterProps) {
             {options.map((option) => (
               <div
                 key={option}
+                role="option"
+                aria-selected={option === selectedRange}
                 className="dropdown-item"
                 onClick={() => handleSelect(option)}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') handleSelect(option); }}
+                tabIndex={0}
               >
                 {option}
               </div>

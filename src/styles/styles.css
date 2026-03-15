@@ -195,3 +195,19 @@ html, body {
   @apply font-bold;
   color: var(--color-primary-dark);
 }
+
+/* ── Recharts SVG transitions ─────────────────────────────────────────────── */
+.recharts-bar-rectangle path {
+  transition: fill 300ms ease-in-out;
+}
+.recharts-cartesian-axis-tick text,
+.recharts-label {
+  transition: fill 300ms ease-in-out;
+}
+.recharts-cartesian-grid line {
+  transition: stroke 300ms ease-in-out;
+}
+.recharts-tooltip-cursor rect,
+.recharts-tooltip-cursor path {
+  transition: fill 300ms ease-in-out;
+}

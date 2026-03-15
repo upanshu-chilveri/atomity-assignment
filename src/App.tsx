@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ClusterTable from "./components/ClusterTable";
 import DateFilter from "./components/DateDropdown";
 import ClusterHeader from "./components/ClusterHeader";
+import CostChart from "./components/CostChart";
 
 import { fetchInfrastructureData } from "./services/api";
 
@@ -115,6 +116,10 @@ function App() {
         selectedCluster={selectedClusterId ? clusters.find(c => c.id === selectedClusterId)?.name || null : null}
         selectedNamespace={selectedNamespaceId ? clusters.find(c => c.id === selectedClusterId)?.namespaces.find(n => n.id === selectedNamespaceId)?.name || null : null}
       />
+
+      {!isLoading && tableData.length > 0 && (
+        <CostChart data={tableData} onSelect={handleSelect} />
+      )}
 
       <div className="table-container">
         {isLoading ? (
